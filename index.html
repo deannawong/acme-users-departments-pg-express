@@ -43,6 +43,9 @@
   <body>
     <div id="root"></div>
     <script type="text/babel">
+      const Office = () => {
+        return;
+      };
       const Departments = ({ users, departments, match }) => {
         const department =
           departments.find(department => department.id === match.params.id) ||
@@ -52,6 +55,7 @@
             user.department_id === match.params.id ||
             (!match.params.id && !user.department_id)
         );
+
         return (
           <div>
             <h2>{department.name}</h2>
@@ -62,6 +66,7 @@
                 </li>
               ))}
             </ul>
+            <Route render={() => <Office />} />
           </div>
         );
       };
@@ -108,17 +113,20 @@
           super();
           this.state = {
             users: [],
-            departments: []
+            departments: [],
+            offices: []
           };
         }
         async componentDidMount() {
           const responses = await Promise.all([
             axios.get("/api/users"),
-            axios("/api/departments")
+            axios("/api/departments"),
+            axios("/api/offices")
           ]);
           this.setState({
             users: responses[0].data,
-            departments: responses[1].data
+            departments: responses[1].data,
+            offices: responses[2].data
           });
         }
         render() {
@@ -135,6 +143,7 @@
                     <Departments {...this.state} match={match} />
                   )}
                 />
+
                 <Route
                   path="/usersWithNoDepartment"
                   render={({ match }) => (

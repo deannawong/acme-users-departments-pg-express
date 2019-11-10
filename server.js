@@ -25,6 +25,11 @@ app.get("/api/departments", (req, res, next) => {
     })
     .catch(next);
 });
+app.get("/api/offices", (req, res, next) => {
+  db.findAllOffices().then(data => {
+    res.send(data);
+  });
+});
 
 db.clientFunc().then(() => {
   app.listen(PORT, () => {
